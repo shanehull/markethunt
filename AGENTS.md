@@ -25,7 +25,7 @@ Mirror the house style established in housecycle, lodestar, go-nem, and go-jev.
 - Every public method takes `ctx context.Context` first.
 - The HTTP server sets read, write, and idle timeouts, logs every request, and drains in-flight requests on SIGINT and SIGTERM.
 - Structured logging with `slog`. Prose in docs is not hard-wrapped: one line per paragraph.
-- The binary exits when its parent exits (PID 1 is exempt), so a killed supervisor cannot leave an orphan holding the port. `/healthz` is liveness; `/readyz` is readiness.
+- The binary exits when its parent exits (PID 1 is exempt), so a killed supervisor cannot leave an orphan holding the port. `/livez` is liveness; `/readyz` is readiness.
 - Commit messages follow conventional commits. release-please generates the changelog. Do not commit unless the user asks; the user commits.
 
 ## Layout

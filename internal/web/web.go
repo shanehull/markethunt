@@ -111,11 +111,12 @@ func (s *Server) routes() http.Handler {
 	mux.HandleFunc("GET /{$}", s.index)
 	mux.HandleFunc("GET /export.csv", s.exportCSV)
 	mux.HandleFunc("GET /country/{iso}", s.detail)
-	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
+	live := func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Cache-Control", "no-store")
 		_, _ = w.Write([]byte(`{"status":"ok"}`))
-	})
+	}
+	mux.HandleFunc("GET /livez", live)
 	mux.HandleFunc("GET /readyz", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Cache-Control", "no-store")

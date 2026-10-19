@@ -17,15 +17,15 @@ type stubStore struct{ snap *model.Snapshot }
 
 func (s stubStore) Snapshot() *model.Snapshot { return s.snap }
 
-func TestHealthz(t *testing.T) {
+func TestLiveness(t *testing.T) {
 	srv, err := New(stubStore{}, Options{})
 	if err != nil {
 		t.Fatal(err)
 	}
 	rec := httptest.NewRecorder()
-	srv.routes().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/healthz", nil))
+	srv.routes().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, "/livez", nil))
 	if rec.Code != http.StatusOK || !strings.Contains(rec.Body.String(), `"status":"ok"`) {
-		t.Fatalf("healthz: %d %q", rec.Code, rec.Body.String())
+		t.Fatalf("livez: %d %q", rec.Code, rec.Body.String())
 	}
 }
 
