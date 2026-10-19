@@ -65,7 +65,7 @@ Then open http://localhost:8080. The first run fetches everything, which takes a
 - `/livez` is liveness: 200 while the process is up.
 - `/readyz` is readiness: 503 until the first ingest lands, then 200.
 - The process exits when its parent exits (PID 1 is exempt), so a killed `air`, shell, or supervisor cannot leave an orphan holding the port. SIGINT, SIGTERM, and SIGHUP drain in-flight requests.
-- The container runs as UID 65534 (nobody), not root.
+- The container runs as UID 65534 (nobody), not root. The image ships a writable `/cache` and sets `MARKETHUNT_CACHE=/cache`; mount a volume there to keep payloads across deploys, otherwise the cache is per-container.
 
 ## Development
 
