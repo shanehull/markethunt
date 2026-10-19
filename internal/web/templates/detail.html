@@ -1,0 +1,103 @@
+{{define "detail.html"}}
+<div class="drawer-card" data-charts="{{.ChartJSON}}">
+  <button class="drawer-close" data-drawer-close aria-label="Close">×</button>
+  <header class="drawer-head">
+    <h2>{{.Country.Name}}</h2>
+    <p class="drawer-sub">{{.Country.Region}} · rank {{.Country.Scores.Rank}} of {{.Total}}</p>
+  </header>
+
+  <div class="drawer-score">
+    <span class="score big {{scoreClass .Country.Scores.Composite}}">{{pct .Country.Scores.Composite}}</span>
+    <span class="drawer-score-label">composite score, {{.Country.Scores.Pillars}} conditions with data</span>
+  </div>
+
+  <ul class="pillars">
+    <li>
+      <span class="pillar-name">EV/EBIT</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.EVEBIT}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.EVEBIT}}</span>
+    </li>
+    <li>
+      <span class="pillar-name">P/B</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.PB}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.PB}}</span>
+    </li>
+    <li>
+      <span class="pillar-name">Growth</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.Growth}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.Growth}}</span>
+    </li>
+    <li>
+      <span class="pillar-name">Savings</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.Savings}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.Savings}}</span>
+    </li>
+    <li>
+      <span class="pillar-name">Trade</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.Trade}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.Trade}}</span>
+    </li>
+    <li>
+      <span class="pillar-name">Free market</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.Freedom}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.Freedom}}</span>
+    </li>
+  </ul>
+
+  <h3 class="drawer-section">Valuation</h3>
+  <dl class="metrics">
+    <div><dt>P/B</dt><dd>{{pb .Country}}</dd></div>
+    <div><dt>EV/EBIT</dt><dd>{{evEbit .Country}}</dd></div>
+    <div><dt>Price / earnings</dt><dd>{{pe .Country}}</dd></div>
+    <div><dt>Dividend yield</dt><dd>{{dividend .Country}}%</dd></div>
+    <div><dt>Listed firms</dt><dd>{{firms .Country}}</dd></div>
+  </dl>
+
+  <h3 class="drawer-section">Macro</h3>
+  <dl class="metrics">
+    <div><dt>GDP growth, avg</dt><dd>{{gdp .Country}}%</dd></div>
+    <div><dt>Growth volatility</dt><dd>{{gdpVol .Country}}</dd></div>
+    <div><dt>Growth years</dt><dd>{{gdpYears .Country}}</dd></div>
+    <div><dt>Gross savings</dt><dd>{{savings .Country}}%</dd></div>
+    <div><dt>External balance</dt><dd>{{trade .Country}}%</dd></div>
+    <div><dt>Debt / GDP</dt><dd>{{debt .Country}}% <span class="faint">({{debtYear .Country}})</span></dd></div>
+    <div><dt>Economic freedom</dt><dd>{{freedom .Country}} / 10</dd></div>
+    <div><dt>5-year change</dt><dd>{{freedomChange .Country}}</dd></div>
+    <div><dt>Years</dt><dd>{{freedomYears .Country}}</dd></div>
+  </dl>
+
+  {{if .Charts}}
+  <div class="charts">
+    {{range .Charts}}
+    <figure class="chart-figure">
+      <figcaption>{{.Label}}</figcaption>
+      <div class="chart-wrap"><canvas id="drawer-chart-{{.ID}}"></canvas></div>
+    </figure>
+    {{end}}
+  </div>
+  {{end}}
+
+  <p class="drawer-note">
+    Composite is a valuation-led weighted blend; EV/EBIT and P/B carry the largest share, and the
+    macro factors carry the rest.
+  </p>
+</div>
+{{end}}

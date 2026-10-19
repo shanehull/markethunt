@@ -1,0 +1,107 @@
+{{define "index.html"}}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="htmx-config" content='{"includeIndicatorStyles":false,"attributesToSettle":["class","width","height"]}'/>
+  <title>markethunt · country valuations and macro factors</title>
+  <meta name="description" content="Every market ranked by the conditions a long-horizon buyer wants: cheap valuations, positive growth, high savings, a trade surplus, manageable government debt, and open institutions. A research tool, not financial advice."/>
+  <link rel="canonical" href="https://markethunt.shanehull.com/"/>
+  <meta name="theme-color" content="#f4f5f8" media="(prefers-color-scheme: light)"/>
+  <meta name="theme-color" content="#0b0d16" media="(prefers-color-scheme: dark)"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="markethunt"/>
+  <meta property="og:title" content="markethunt · country valuations and macro factors"/>
+  <meta property="og:description" content="Every market ranked by valuation, growth, savings, trade, government debt, and free-market institutions."/>
+  <meta property="og:url" content="https://markethunt.shanehull.com/"/>
+  <meta property="og:image" content="https://markethunt.shanehull.com/static/og.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta property="og:image:alt" content="markethunt - country valuations and macro factors"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="markethunt · country valuations and macro factors"/>
+  <meta name="twitter:description" content="Every market ranked by valuation, growth, savings, trade, government debt, and free-market institutions."/>
+  <meta name="twitter:image" content="https://markethunt.shanehull.com/static/og.png"/>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+  <link rel="apple-touch-icon" href="/static/apple-touch-icon.png"/>
+  <style nonce="{{.StyleNonce}}">{{.CSS}}</style>
+  {{range .Scripts}}<script src="{{.URL}}" {{.IntegrityAttr}} crossorigin="anonymous" defer></script>
+  {{end}}
+  <script src="/static/app.js" defer></script>
+  <script type="application/ld+json" nonce="{{.ScriptNonce}}">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "markethunt",
+    "url": "https://markethunt.shanehull.com/",
+    "description": "Every market ranked by valuation, growth, savings, trade, government debt, and free-market institutions.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="9"/>
+          <ellipse cx="12" cy="12" rx="4" ry="9"/>
+          <path d="M3 12h18M4.4 7h15.2M4.4 17h15.2"/>
+        </svg>
+        markethunt
+      </a>
+      <span class="header-note">Country valuations and macro factors, ranked</span>
+    </div>
+  </header>
+  <main>
+    <div class="container">
+      <section class="lede">
+        <h1>Hunting for bargains where the crowd is most pessimistic</h1>
+        <p>
+          Ranked by a valuation-led blend. EV/EBIT and P/B carry half the score; growth,
+          savings, trade, government debt, and free-market institutions carry the rest. A
+          research tool, not financial advice.
+        </p>
+      </section>
+
+      <form id="filters" class="controls"
+            hx-get="/" hx-target="#rank" hx-swap="outerHTML"
+            hx-trigger="change, keyup changed delay:300ms"
+            hx-include="#filters" hx-push-url="true">
+        <label class="control">
+          <span class="control-label">Search</span>
+          <input type="search" name="q" value="{{.Query}}" placeholder="Country name" autocomplete="off"/>
+        </label>
+        <label class="control">
+          <span class="control-label">Region</span>
+          <select name="region">
+            <option value="">All regions</option>
+            {{range .Regions}}<option value="{{.}}"{{if eq . $.Region}} selected{{end}}>{{.}}</option>
+            {{end}}
+          </select>
+        </label>
+        <input type="hidden" name="sort" value="{{.Sort}}"/>
+        <input type="hidden" name="dir" value="{{.Dir}}"/>
+        <span class="actions">
+          <a class="download" href="{{exportURL .}}">Download CSV</a>
+          <a class="reset" href="/">Reset</a>
+        </span>
+      </form>
+
+      {{template "table.html" .}}
+    </div>
+  </main>
+  <div id="drawer" class="drawer" role="dialog" aria-modal="true"></div>
+  <footer class="site-footer">
+    <div class="container">
+      Data: Aswath Damodaran (country multiples), World Bank (GDP growth, savings, external balance), Fraser Institute (economic freedom), IMF (government debt).
+      A research tool, not financial advice.
+      <span class="footer-credits">Updated {{.AsOf}} · valuations {{.ValuationAt}} · version {{.Version}}</span>
+    </div>
+  </footer>
+</body>
+</html>
+{{end}}

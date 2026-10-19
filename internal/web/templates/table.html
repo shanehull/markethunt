@@ -1,0 +1,57 @@
+{{define "table.html"}}
+{{if .Snapshot}}
+<div id="rank">
+  <p class="summary">
+    {{.Matched}} of {{.Total}} markets{{if .Region}} in {{.Region}}{{end}}.
+    Ranked by a valuation-led composite.
+  </p>
+  <div class="table-wrap">
+    <table class="rank-table">
+      <thead>
+        <tr>
+          <th class="rank-col" scope="col" title="Rank by composite score">#</th>
+          <th scope="col"><a href="{{sortURL . "name"}}" hx-get="{{sortURL . "name"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Country and World Bank region">Country <span class="mark">{{sortMark . "name"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "composite"}}" hx-get="{{sortURL . "composite"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Valuation-led composite; higher is more favourable">Score <span class="mark">{{sortMark . "composite"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "pb"}}" hx-get="{{sortURL . "pb"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Median price-to-book across listed firms (Damodaran)">P/B <span class="mark">{{sortMark . "pb"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "evebit"}}" hx-get="{{sortURL . "evebit"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Median enterprise value to EBIT across listed firms (Damodaran); capital-structure and tax neutral">EV/EBIT <span class="mark">{{sortMark . "evebit"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "gdp"}}" hx-get="{{sortURL . "gdp"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Five-year average real GDP growth (World Bank)">GDP <span class="mark">{{sortMark . "gdp"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "savings"}}" hx-get="{{sortURL . "savings"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Gross national savings as a share of GDP (World Bank)">Savings <span class="mark">{{sortMark . "savings"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "trade"}}" hx-get="{{sortURL . "trade"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="External balance on goods and services as a share of GDP (World Bank)">Trade <span class="mark">{{sortMark . "trade"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "debt"}}" hx-get="{{sortURL . "debt"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="General government gross debt, % of GDP (IMF WEO, latest completed year)">Debt/GDP <span class="mark">{{sortMark . "debt"}}</span></a></th>
+          <th class="num" scope="col"><a href="{{sortURL . "freedom"}}" hx-get="{{sortURL . "freedom"}}" hx-target="#rank" hx-swap="outerHTML" hx-push-url="true" title="Fraser Institute Economic Freedom of the World, 0-10 (higher is more free)">EFW <span class="mark">{{sortMark . "freedom"}}</span></a></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range .Rows}}
+        <tr class="row" hx-get="/country/{{.ISO3}}" hx-target="#drawer" hx-swap="innerHTML" tabindex="0">
+          <td class="rank-col">{{.Scores.Rank}}</td>
+          <td class="country"><span class="name">{{.Name}}</span><span class="region">{{.Region}}</span></td>
+          <td class="num score-cell">
+            <span class="score {{scoreClass .Scores.Composite}}">{{pct .Scores.Composite}}</span>
+            <svg class="score-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+              <rect class="score-track" width="100" height="6" rx="3"/>
+              <rect class="score-fill {{scoreClass .Scores.Composite}}" width="{{pct .Scores.Composite}}" height="6" rx="3"/>
+            </svg>
+          </td>
+          <td class="num">{{pb .}}</td>
+          <td class="num">{{evEbit .}}</td>
+          <td class="num">{{gdp .}}</td>
+          <td class="num">{{savings .}}</td>
+          <td class="num">{{trade .}}</td>
+          <td class="num">{{debt .}}</td>
+          <td class="num">{{freedom .}}</td>
+        </tr>
+        {{else}}
+        <tr><td colspan="10" class="empty">No markets match.</td></tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</div>
+{{else}}
+<div id="rank" class="loading" hx-get="/" hx-trigger="every 3s" hx-target="#rank" hx-swap="outerHTML">
+  <span class="spinner" aria-hidden="true"></span>
+  <p>Fetching country multiples and macro data. This takes a few seconds.</p>
+</div>
+{{end}}
+{{end}}
