@@ -91,6 +91,37 @@ func TestBuildRequiresAValuationMultiple(t *testing.T) {
 	}
 }
 
+func TestBuildRequiresBothValuationMultiples(t *testing.T) {
+	macros := map[string]model.Macro{"AUS": *macro(2, 20, 0, 6, 60)}
+	for name, v := range map[string]model.Valuation{
+		"no PB":     {EVEBIT: 10, Firms: 100},
+		"no EVEBIT": {PB: 1, Firms: 100},
+	} {
+		if snap := Build(map[string]model.Valuation{"AUS": v}, macros, time.Now()); len(snap.Countries) != 0 {
+			t.Fatalf("%s: want no ranked countries, got %d", name, len(snap.Countries))
+		}
+	}
+}
+
+func TestBuildRequiresAllMacroFactors(t *testing.T) {
+	vals := map[string]model.Valuation{"AUS": {PB: 1, EVEBIT: 10, Firms: 100}}
+	base := macro(2, 20, 0, 6, 60)
+	cases := map[string]func(*model.Macro){
+		"growth":  func(m *model.Macro) { m.Growth = nil },
+		"savings": func(m *model.Macro) { m.Savings = nil },
+		"trade":   func(m *model.Macro) { m.Trade = nil },
+		"debt":    func(m *model.Macro) { m.Debt = nil },
+		"freedom": func(m *model.Macro) { m.Freedom = nil },
+	}
+	for name, drop := range cases {
+		m := *base
+		drop(&m)
+		if snap := Build(vals, map[string]model.Macro{"AUS": m}, time.Now()); len(snap.Countries) != 0 {
+			t.Fatalf("%s: want no ranked countries, got %d", name, len(snap.Countries))
+		}
+	}
+}
+
 func TestScoresAreBoundedAndRanked(t *testing.T) {
 	vals := map[string]model.Valuation{
 		"AUS": {PB: 1.0, EVEBIT: 10, Firms: 100},

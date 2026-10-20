@@ -32,17 +32,18 @@ const (
 // the table on a noisy multiple.
 const MinFirms = 30
 
-// Build assembles the ranked snapshot. A country is ranked when it clears the
-// liquidity floor, has at least one valuation multiple, and has a GDP history.
+// Build assembles the ranked snapshot. A country is ranked only when it clears
+// the liquidity floor, has both valuation multiples, and has all five macro
+// factors, so every rank is built from the same seven inputs.
 func Build(vals map[string]model.Valuation, macros map[string]model.Macro, at time.Time) *model.Snapshot {
 	var rows []model.Country
 	for iso, info := range country.ByISO3 {
 		v, ok := vals[iso]
-		if !ok || v.Firms < MinFirms || (v.PB <= 0 && v.EVEBIT <= 0) {
+		if !ok || v.Firms < MinFirms || v.PB <= 0 || v.EVEBIT <= 0 {
 			continue
 		}
 		m := macros[iso]
-		if m.Growth == nil {
+		if m.Growth == nil || m.Savings == nil || m.Trade == nil || m.Debt == nil || m.Freedom == nil {
 			continue
 		}
 		mm := m

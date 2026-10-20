@@ -32,6 +32,7 @@ func datasets() (source.Dataset, source.Dataset) {
 			Savings: &model.Savings{Rate: 20},
 			Trade:   &model.Trade{Balance: 3},
 			Freedom: &model.Freedom{Score: 7},
+			Debt:    &model.Debt{Ratio: 50},
 		},
 	}}
 	return vals, macros
