@@ -11,6 +11,9 @@
     <span class="drawer-score-label">composite score, {{.Country.Scores.Pillars}} conditions with data</span>
   </div>
 
+  <h3 class="drawer-section">Factor scores</h3>
+  <p class="drawer-caption">Percentile rank across markets: 100 is the most favourable. Raw values are below.</p>
+
   <ul class="pillars">
     <li>
       <span class="pillar-name">EV/EBIT</span>
@@ -51,6 +54,14 @@
         <rect class="pillar-fill" width="{{pct .Country.Scores.Trade}}" height="6" rx="3"/>
       </svg>
       <span class="pillar-val">{{pct .Country.Scores.Trade}}</span>
+    </li>
+    <li>
+      <span class="pillar-name">Debt/GDP</span>
+      <svg class="pillar-bar" viewBox="0 0 100 6" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="pillar-track" width="100" height="6" rx="3"/>
+        <rect class="pillar-fill" width="{{pct .Country.Scores.Debt}}" height="6" rx="3"/>
+      </svg>
+      <span class="pillar-val">{{pct .Country.Scores.Debt}}</span>
     </li>
     <li>
       <span class="pillar-name">Free market</span>

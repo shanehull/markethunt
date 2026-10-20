@@ -191,7 +191,7 @@ func TestDetailCharts(t *testing.T) {
 				{Date: time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC), Value: 2.9},
 			},
 		}},
-		Scores: model.Scores{Rank: 1, Composite: 0.5, Pillars: 6},
+		Scores: model.Scores{Rank: 1, Composite: 0.5, Debt: 0.75, Pillars: 7},
 	}}}
 	srv, err := New(stubStore{snap: snap}, Options{})
 	if err != nil {
@@ -208,6 +208,9 @@ func TestDetailCharts(t *testing.T) {
 	}
 	if strings.Contains(body, "<svg class=\"spark\"") {
 		t.Fatal("sparkline SVG should be gone")
+	}
+	if !strings.Contains(body, ">Debt/GDP<") || !strings.Contains(body, ">75<") {
+		t.Fatal("missing debt pillar")
 	}
 }
 
