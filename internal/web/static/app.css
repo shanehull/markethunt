@@ -347,6 +347,9 @@ main { padding: 28px 22px 72px; }
 
 .metrics dd { margin: 2px 0 0; font-weight: 680; font-variant-numeric: tabular-nums; }
 
+/* An odd number of metrics would leave a blank cell; let the last one fill the row. */
+.metrics > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
 .charts { display: grid; gap: 16px; margin-top: 16px; }
 
 .chart-figure { margin: 0; }
