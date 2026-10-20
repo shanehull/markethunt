@@ -92,13 +92,48 @@
       </form>
 
       {{template "table.html" .}}
+
+      <section id="method" class="method">
+        <h2>How the score works</h2>
+        <p>
+          We rank every market on the same seven things. Each one becomes a percentile: a country at
+          80 on savings scores better than 80% of the markets in the table. The score is the
+          weighted average of those percentiles. If a country is missing a factor, we drop it and
+          reweight the rest, so no one is marked down for data we do not have.
+        </p>
+        <!-- Weights mirror internal/ranking/ranking.go. -->
+        <table class="method-table">
+          <thead>
+            <tr><th scope="col">Condition</th><th scope="col">Weight</th><th scope="col">What it measures</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>EV/EBIT</td><td>0.30</td><td>Median enterprise value to EBIT. Ignores debt and tax, so it compares better across countries.</td></tr>
+            <tr><td>P/B</td><td>0.20</td><td>Median price to book. What you pay for the assets on the balance sheet.</td></tr>
+            <tr><td>Savings</td><td>0.15</td><td>Gross national savings as a share of GDP. Domestic capital for investment.</td></tr>
+            <tr><td>Growth</td><td>0.10</td><td>Five-year average GDP growth. Backward-looking, so it counts for less than savings.</td></tr>
+            <tr><td>Trade</td><td>0.10</td><td>External balance on goods and services as a share of GDP. Whether the country earns more abroad than it spends.</td></tr>
+            <tr><td>Debt</td><td>0.10</td><td>General government gross debt as a share of GDP, latest completed year. Government only, not private or external debt.</td></tr>
+            <tr><td>Free market</td><td>0.05</td><td>Fraser's Economic Freedom of the World rating and its five-year change. A soft signal, not a veto.</td></tr>
+          </tbody>
+        </table>
+        <p>
+          Valuation is half the score. Growth is a trailing average, so it counts for less than
+          savings. The freedom rating is a nudge, not a gate: a closed market can still be cheap
+          enough to be interesting.
+        </p>
+        <p>
+          This is a shortlist, not a buy list. A high rank means a market looks cheap next to the
+          others, with conditions that look supportive. It does not tell you when the price will
+          turn.
+        </p>
+      </section>
     </div>
   </main>
   <div id="drawer" class="drawer" role="dialog" aria-modal="true"></div>
   <footer class="site-footer">
     <div class="container">
-      Data: Aswath Damodaran (country multiples), World Bank (GDP growth, savings, external balance), Fraser Institute (economic freedom), IMF (government debt).
-      A research tool, not financial advice.
+      Built from Damodaran's country multiples, World Bank macro data, Fraser's economic freedom index, and IMF debt figures. Research, not advice.
+      <a class="footer-link" href="#method">How the score works</a>
       <span class="footer-credits">Updated {{.AsOf}} · valuations {{.ValuationAt}} · version {{.Version}}</span>
     </div>
   </footer>
