@@ -47,7 +47,7 @@ internal/web          templates, static assets, HTTP server
 
 ## Working on the ranking
 
-The scoring lives in `internal/ranking/ranking.go`. Factor weights and the liquidity floor (`MinFirms`) are constants at the top of that file; tune them there. Valuation leads the composite (EV/EBIT 0.30, P/B 0.20) but the macro factors still score (growth 0.10, savings 0.15, trade 0.10, debt 0.10, freedom 0.05). Adding a factor means a new score line in `score`, a field on `model.Scores`, a `collect` population, and a column in `internal/web/templates/table.html`. The pure maths (percentile rank) lives in `internal/analytics`.
+The scoring lives in `internal/ranking/ranking.go`. Factor weights and the liquidity floor (`MinFirms`) are constants at the top of that file; tune them there. Valuation leads the composite (EV/EBIT 0.30, P/B 0.20) but the macro factors still score (growth 0.10, savings 0.15, trade 0.10, debt 0.10, freedom 0.05). Adding a factor means a new score line in `score`, a field on `model.Scores`, a `collect` population, a column in `internal/web/templates/table.html`, and a row in the method table in `internal/web/templates/index.html`. The pure maths (percentile rank) lives in `internal/analytics`.
 
 Sources must degrade gracefully. A fetch error for one source never fails the page; the ranking simply leaves that factor empty and renormalises. `ingest.Run` stores whatever a source returned even when it also returned an error, and the wiring logs the error.
 

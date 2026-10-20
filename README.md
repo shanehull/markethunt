@@ -22,6 +22,8 @@ Countries are ranked by a **valuation-led composite**. Each condition is a cross
 
 Valuation carries half the score, so a cheap market can outweigh weak macro, but macro still matters: a market needs growth, savings, a trade surplus, and a manageable debt load to look attractive, and strong institutions help. The free-market reading is deliberately a soft signal, because a market that looks closed can still be a bargain on a qualitative read.
 
+The same weights appear on the page under **How the score works**.
+
 The table exports the current view, filters and sort included, as CSV from the toolbar.
 
 ## How it works
