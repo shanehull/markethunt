@@ -12,13 +12,13 @@ Countries are ranked by a **valuation-led composite**. Each condition is a cross
 
 | Condition   | What it measures                                                                                 | Source     | Weight |
 | ----------- | ------------------------------------------------------------------------------------------------ | ---------- | -----: |
-| EV/EBIT     | Median EV/EBIT from Damodaran's latest snapshot. Capital-structure and tax neutral, so it leads.   | Damodaran  |   0.30 |
-| P/B         | Median price-to-book from the same snapshot.                                                       | Damodaran  |   0.20 |
-| Growth      | Five-year average annual GDP growth.                                                               | World Bank |   0.15 |
-| Savings     | Gross national savings as a share of GDP.                                                          | World Bank |   0.10 |
-| Trade       | External balance on goods and services as a share of GDP.                                          | World Bank |   0.10 |
-| Debt        | General government gross debt as a share of GDP, latest completed WEO year.                        | IMF        |   0.10 |
-| Free market | Fraser Institute Economic Freedom of the World overall rating (0-10) and its five-year change.     | Fraser     |   0.05 |
+| EV/EBIT     | Median EV/EBIT from Damodaran's latest snapshot. Capital-structure and tax neutral, so it leads. | Damodaran  |   0.30 |
+| P/B         | Median price-to-book from the same snapshot.                                                     | Damodaran  |   0.20 |
+| Growth      | Five-year average annual GDP growth.                                                             | World Bank |   0.10 |
+| Savings     | Gross national savings as a share of GDP.                                                        | World Bank |   0.15 |
+| Trade       | External balance on goods and services as a share of GDP.                                        | World Bank |   0.10 |
+| Debt        | General government gross debt as a share of GDP, latest completed WEO year.                      | IMF        |   0.10 |
+| Free market | Fraser Institute Economic Freedom of the World overall rating (0-10) and its five-year change.   | Fraser     |   0.05 |
 
 Valuation carries half the score, so a cheap market can outweigh weak macro, but macro still matters: a market needs growth, savings, a trade surplus, and a manageable debt load to look attractive, and strong institutions help. The free-market reading is deliberately a soft signal, because a market that looks closed can still be a bargain on a qualitative read.
 
@@ -98,7 +98,7 @@ The ranked universe changes with provider coverage: a market is included when it
 ## Data notes
 
 - **Valuation is the latest Damodaran snapshot, never averaged.** His file gives each country a median EV/EBIT and a median price-to-book. The two are scored as separate factors, so a market cheap on earnings but expensive on book is not flattened into a single number. EV/EBIT carries the larger weight because it is capital-structure and tax neutral, which matters across countries. The annual archive files are no longer fetched: they existed only to compute multi-year averages.
-- **This is not MSCI-style CAPE or CAPB.** Those average ten years of inflation-adjusted *aggregate* earnings or book value. Damodaran publishes one-year *firm medians*, which is a different construct and not comparable. Siblis Research publishes a keyless, genuinely cyclically adjusted CAPE for a handful of markets, but no country-level P/B, so broad coverage won here.
+- **This is not MSCI-style CAPE or CAPB.** Those average ten years of inflation-adjusted _aggregate_ earnings or book value. Damodaran publishes one-year _firm medians_, which is a different construct and not comparable. Siblis Research publishes a keyless, genuinely cyclically adjusted CAPE for a handful of markets, but no country-level P/B, so broad coverage won here.
 - **P/FCF is not here.** No keyless source publishes country-level price-to-free-cash-flow. Damodaran's country file carries price-to-book, EV/EBIT, EV/EBITDA, price-to-earnings and dividend yield, but no free-cash-flow multiple, so EV/EBIT is the cash-flow-adjacent measure.
 - **Free-market conditions come from Fraser, not Heritage.** Heritage blocks automated clients and has omitted Hong Kong from recent editions. The World Bank governance indicators are a narrower proxy. Fraser's `efotw.org` master workbook is keyless and ISO-coded, covers most of the universe including Hong Kong and Taiwan, and carries the full history, so the factor is the overall EFW rating (0-10) plus a five-year change. Its report lags the valuation data by about a year; it is a slow-moving institutional measure. Markets Fraser does not cover drop the factor and renormalise.
 - **Debt comes from the official IMF SDMX API.** General government gross debt as a share of GDP, annual, from the World Economic Outlook. The WEO carries projection years, so only completed years are kept; projections are never used. Coverage is broad: where the IMF omits a market, the factor is dropped and the weights renormalise. DBnomics is not used.

@@ -12,14 +12,16 @@ import (
 )
 
 // Weights for the composite. Valuation leads because a cheap price can outweigh
-// a lot, but the macro factors still score: a market needs growth, savings and a
-// trade surplus to look attractive, not just a low multiple. EV/EBIT is the
-// larger valuation factor because it is capital-structure and tax neutral.
+// a lot, but the macro factors still score. EV/EBIT is the larger valuation
+// factor because it is capital-structure and tax neutral. Growth is a trailing
+// average and a weak predictor of equity returns, so it carries less than
+// savings: domestic capital funds investment without borrowing abroad, while
+// past growth does not compound.
 const (
 	weightEVEBIT  = 0.30
 	weightPB      = 0.20
-	weightGrowth  = 0.15
-	weightSavings = 0.10
+	weightGrowth  = 0.10
+	weightSavings = 0.15
 	weightTrade   = 0.10
 	weightFreedom = 0.05
 	weightDebt    = 0.10
